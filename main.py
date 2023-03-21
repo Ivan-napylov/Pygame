@@ -1,6 +1,7 @@
 # Импорт библиотек
 from player import Player
 from camera import Camera
+from tree import Tree
 import pygame
 import random
 
@@ -11,8 +12,8 @@ class Game():
         pygame.display.set_caption("Game")
 
         # Установим расширение экрана и частоту обновления
-        self.visota = 700
-        self.shirina = 1000
+        self.visota = 720
+        self.shirina = 1280
         self.FPS = 60
 
         # создание игры и окна
@@ -20,8 +21,16 @@ class Game():
         self.clock = pygame.time.Clock()
 
 
+        # Камера
+        self.camera_group = Camera()
         # Игрок
-        self.player = Player(self.screen, 'red', 20,  self.shirina / 2 - 10, self.visota / 2 - 10)
+        self.player = Player((self.shirina / 2 - 32, self.visota / 2 - 32), self.camera_group)
+
+        # Окружение        
+        for i in range(20):
+            random_x = random.randint(0, 1000)
+            random_y = random.randint(0, 1000)
+            Tree((random_x, random_y), self.camera_group)
 
 
     def run(self):
@@ -36,11 +45,11 @@ class Game():
 
             
             # Рендеринг
-            self.screen.fill((0, 0, 0))
+            self.screen.fill((50, 0, 0))
 
-            # Игрок
-            self.player.move()
-            self.player.draw()
+            # Камера
+            self.camera_group.update()
+            self.camera_group.custom_draw()
 
             pygame.display.update()
 
