@@ -4,14 +4,29 @@ class Camera(pygame.sprite.Group):
     def __init__(self):
         super().__init__()
         self.disp = pygame.display.get_surface()
+
+        # Вектор камеры
+        self.offset = pygame.math.Vector2()
+        self.half_w = self.disp.get_size()[0] // 2
+        self.half_h = self.disp.get_size()[1] // 2
+
         self.bg = pygame.image.load('graphics/bg.png').convert_alpha()
         self.bg_rect = self.bg.get_rect(topleft = (0, 0))
-        self.width = 0
-        self.height = 0
 
-    def custom_draw(self):
+    def center_target_camera(self, target):
+        self.offset.x = target.rect.centerx - self.half_w
+        self.offset.y = target.rect.centery - self.half_h
+
+    def custom_draw(self, player):
+
+        self.center_target_camera(player)
+
         # Background
-        self.disp.blit(self.bg, self.bg_rect)
+        bg_offset = self.bg_rect.topleft - self.offset
+        self.disp.blit(self.bg, bg_offset)
+
+
         # Активные элементы
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
-            self.disp.blit(sprite.image, sprite.rect)
+            offset_pos = sprite.rect.topleft - self.offset
+            self.disp.blit(sprite.image, offset_pos)

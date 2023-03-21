@@ -49,7 +49,7 @@ class Game():
 
             # Камера
             self.camera_group.update()
-            self.camera_group.custom_draw()
+            self.camera_group.custom_draw(self.player)
 
             pygame.display.update()
 
