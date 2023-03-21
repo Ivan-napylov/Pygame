@@ -1,6 +1,7 @@
 # Импорт библиотек
 from player import Player
 from camera import Camera
+from enemy import Enemy
 from tree import Tree
 import pygame
 import random
@@ -24,12 +25,12 @@ class Game():
         # Камера
         self.camera_group = Camera()
         # Игрок
-        self.player = Player((self.shirina / 2 - 32, self.visota / 2 - 32), self.camera_group)
+        self.player = Player((self.shirina / 2, self.visota / 2), self.camera_group)
 
         # Окружение        
         for i in range(20):
-            random_x = random.randint(0, 1000)
-            random_y = random.randint(0, 1000)
+            random_x = random.randint(0, 4000)
+            random_y = random.randint(0, 4000)
             Tree((random_x, random_y), self.camera_group)
 
 
@@ -45,7 +46,7 @@ class Game():
 
             
             # Рендеринг
-            self.screen.fill((50, 0, 0))
+            self.screen.fill('#8d076a')
 
             # Камера
             self.camera_group.update()
